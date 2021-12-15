@@ -37,7 +37,8 @@ cdef extern from "RichModel.hpp":
         int indexOfReverseEdge;
         int indexOfFrontFace;
         double length;      
-        CEdge();            
+        CEdge();          
+        CEdge(CEdge other)  
     
     cdef cppclass EdgePoint:
         int index;
@@ -71,7 +72,7 @@ cdef extern from "RichModel.hpp":
         bool IsExtremeEdge(int)
         bool IsStartEdge(int);
         bool HasBeenProcessed();
-#         CEdge Edge(int);
+        CEdge Edge(int);
     
         
 cdef extern from "ExactMethodForDGP.hpp":

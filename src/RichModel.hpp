@@ -12,6 +12,7 @@ using namespace std;
 
 struct CEdge
 {
+public:
 	int indexOfLeftVert;
 	int indexOfRightVert;
 	int indexOfOppositeVert;
@@ -25,14 +26,16 @@ struct CEdge
 	// |unitY    unitX|
 	std::pair<double, double> matrixRotatedToLeftEdge;
 	std::pair<double, double> matrixRotatedToRightEdge;
-	CEdge()
-	{
-		indexOfOppositeVert = -1; // key
-		indexOfLeftEdge = -1;
-		indexOfRightEdge = -1;
-		indexOfFrontFace = -1;
-	}
+	CEdge();
 };
+
+CEdge::CEdge()
+{
+	indexOfOppositeVert = -1; // key
+	indexOfLeftEdge = -1;
+	indexOfRightEdge = -1;
+	indexOfFrontFace = -1;
+}
 
 class CRichModel : public CBaseModel
 {
