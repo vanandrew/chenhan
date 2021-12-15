@@ -1,3 +1,12 @@
+geodesic-chenhan
+=================
+
+This is an updated fork of the original `chenhan_cython` repo. It uses `pyproject.toml` to pre-install `Cython` and `autowrap` before the compilation step, so that you don't need to install it beforehand. It also has some clean-up changes to the C++ code.
+
+Future work will focus on creating an interface for this module to work with the [Trimesh](https://github.com/mikedh/trimesh) library.
+
+Below is information from the original README:
+
 chenhancc
 ==============
 
