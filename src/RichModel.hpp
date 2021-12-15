@@ -27,7 +27,7 @@ struct CEdge
 	std::pair<double, double> matrixRotatedToRightEdge;
 	CEdge()
 	{
-		indexOfOppositeVert = -1;	//key
+		indexOfOppositeVert = -1; // key
 		indexOfLeftEdge = -1;
 		indexOfRightEdge = -1;
 		indexOfFrontFace = -1;
@@ -36,20 +36,21 @@ struct CEdge
 
 class CRichModel : public CBaseModel
 {
-//protected:
+	// protected:
 
 public:
 	CRichModel();
-	void Preprocess();	
+	void Preprocess();
 	void ClearEdges()
 	{
-		fLocked = false; fBePreprocessed = false; m_nBoundries = 0;
-		m_nIsolatedVerts = 0; 
-		m_NeighsAndAngles.clear(); 
-		m_FlagsForCheckingConvexVerts.clear(); 
+		fLocked = false;
+		fBePreprocessed = false;
+		m_nBoundries = 0;
+		m_nIsolatedVerts = 0;
+		m_NeighsAndAngles.clear();
+		m_FlagsForCheckingConvexVerts.clear();
 		m_Edges.clear();
 	}
-
 
 	void CreateEdgesFromVertsAndFaces();
 	void CollectAndArrangeNeighs();
@@ -59,18 +60,18 @@ public:
 	void ComputeNumOfComponents();
 
 	inline int GetSubindexToVert(int root, int neigh) const;
-	inline const CEdge& Edge(int edgeIndex) const;	
-    inline const std::vector<std::pair<int, double> >& Neigh(int root) const;
+	inline const CEdge &Edge(int edgeIndex) const;
+	inline const std::vector<std::pair<int, double>> &Neigh(int root) const;
 	inline double AngleSum(int vertIndex) const;
-	//inline double Curvature(int vertIndex) const;
-    inline double ProportionOnEdgeByImage(int edgeIndex, const std::pair<double, double> &coord) const;
-    inline double ProportionOnLeftEdgeByImage(int edgeIndex, const std::pair<double, double> &coord, double proportion) const;
-    inline double ProportionOnRightEdgeByImage(int edgeIndex, const std::pair<double, double> &coord, double proportion) const;
+	// inline double Curvature(int vertIndex) const;
+	inline double ProportionOnEdgeByImage(int edgeIndex, const std::pair<double, double> &coord) const;
+	inline double ProportionOnLeftEdgeByImage(int edgeIndex, const std::pair<double, double> &coord, double proportion) const;
+	inline double ProportionOnRightEdgeByImage(int edgeIndex, const std::pair<double, double> &coord, double proportion) const;
 	inline double ProportionOnEdgeByImage(int edgeIndex, double x1, double y1, double x2, double y2) const;
-    inline std::pair<double, double> GetNew2DCoordinatesByRotatingAroundLeftChildEdge(int edgeIndex, const std::pair<double, double>& input2DCoordinates) const;
-    inline std::pair<double, double> GetNew2DCoordinatesByRotatingAroundRightChildEdge(int edgeIndex, const std::pair<double, double>& input2DCoordinates) const;
-    inline std::pair<double, double> GetNew2DCoordinatesByReversingCurrentEdge(int edgeIndex, const std::pair<double, double>& input2DCoordinates) const;
-    inline double DistanceToIncidentAngle(int edgeIndex, const std::pair<double, double>& coord) const;
+	inline std::pair<double, double> GetNew2DCoordinatesByRotatingAroundLeftChildEdge(int edgeIndex, const std::pair<double, double> &input2DCoordinates) const;
+	inline std::pair<double, double> GetNew2DCoordinatesByRotatingAroundRightChildEdge(int edgeIndex, const std::pair<double, double> &input2DCoordinates) const;
+	inline std::pair<double, double> GetNew2DCoordinatesByReversingCurrentEdge(int edgeIndex, const std::pair<double, double> &input2DCoordinates) const;
+	inline double DistanceToIncidentAngle(int edgeIndex, const std::pair<double, double> &coord) const;
 	inline int GetNumOfEdges() const;
 	inline int GetNumOfValidDirectedEdges() const;
 	inline int GetNumOfTotalUndirectedEdges() const;
@@ -82,29 +83,31 @@ public:
 	inline bool isBoundaryVert(int index) const;
 	inline bool IsClosedModel() const;
 	inline bool IsExtremeEdge(int edgeIndex) const;
-	inline bool IsStartEdge(int edgeIndex) const;	
+	inline bool IsStartEdge(int edgeIndex) const;
 	inline bool HasBeenProcessed() const;
-	//inline int GetFirstEdgeIndex(int faceIndex) const;
-	//inline int GetSecondEdgeIndex(int faceIndex) const;
-	//inline int GetThirdEdgeIndex(int faceIndex) const;
-	//inline int GetEdgeIndexFromFace(int faceIndex, int subIndex) const;
+	// inline int GetFirstEdgeIndex(int faceIndex) const;
+	// inline int GetSecondEdgeIndex(int faceIndex) const;
+	// inline int GetThirdEdgeIndex(int faceIndex) const;
+	// inline int GetEdgeIndexFromFace(int faceIndex, int subIndex) const;
 	inline int GetEdgeIndexFromTwoVertices(int leftVert, int rightVert) const;
 	void SetEdgeLength(int leftVert, int rightVert, double newLen, bool apply_reverse);
 	void UpdateAfterChangingEdgeLengths();
 	inline CPoint3D ComputeShiftPoint(int indexOfVert) const;
 	inline CPoint3D ComputeShiftPoint(int indexOfVert, double epsilon) const;
-	static CPoint3D CombinePointAndNormalTo(const CPoint3D& pt, const CPoint3D& normal);
-	static CPoint3D CombineTwoNormalsTo(const CPoint3D& pt1, double coef1, const CPoint3D& pt2, double coef2);	
+	static CPoint3D CombinePointAndNormalTo(const CPoint3D &pt, const CPoint3D &normal);
+	static CPoint3D CombineTwoNormalsTo(const CPoint3D &pt1, double coef1, const CPoint3D &pt2, double coef2);
+
 protected:
 	bool fLocked;
 	bool fBePreprocessed;
 	int m_nBoundries;
 	int m_nIsolatedVerts;
 	int m_nComponents;
-    std::vector<std::vector<std::pair<int, double> > > m_NeighsAndAngles;
-    std::vector<bool> m_FlagsForCheckingConvexVerts;
+	std::vector<std::vector<std::pair<int, double>>> m_NeighsAndAngles;
+	std::vector<bool> m_FlagsForCheckingConvexVerts;
+
 public:
-    std::vector<CEdge> m_Edges;
+	std::vector<CEdge> m_Edges;
 };
 
 int CRichModel::GetNumOfValidDirectedEdges() const
@@ -134,7 +137,7 @@ int CRichModel::GetNumOfBoundries() const
 
 bool CRichModel::IsClosedModel() const
 {
-	return GetNumOfValidDirectedEdges() ==  GetNumOfEdges();
+	return GetNumOfValidDirectedEdges() == GetNumOfEdges();
 }
 
 int CRichModel::GetNumOfIsolated() const
@@ -155,12 +158,12 @@ bool CRichModel::isBoundaryVert(int index) const
 bool CRichModel::IsConvexVert(int index) const
 {
 	return m_FlagsForCheckingConvexVerts[index];
-	//double sumAngle = 0;
-	//for (int i = 0; i < Neigh(index).size(); ++i)
+	// double sumAngle = 0;
+	// for (int i = 0; i < Neigh(index).size(); ++i)
 	//{
 	//	sumAngle += Neigh(index)[i].second;
-	//}
-	//return sumAngle < 2 * M_PI - ToleranceOfConvexAngle;
+	// }
+	// return sumAngle < 2 * M_PI - ToleranceOfConvexAngle;
 }
 
 bool CRichModel::IsExtremeEdge(int edgeIndex) const
@@ -173,17 +176,17 @@ bool CRichModel::IsStartEdge(int edgeIndex) const
 	return Edge(Edge(edgeIndex).indexOfReverseEdge).indexOfOppositeVert == -1;
 }
 
-const CEdge& CRichModel::Edge(int edgeIndex) const
+const CEdge &CRichModel::Edge(int edgeIndex) const
 {
 	return m_Edges[edgeIndex];
 }
 
-const std::vector<std::pair<int, double> >& CRichModel::Neigh(int root) const
+const std::vector<std::pair<int, double>> &CRichModel::Neigh(int root) const
 {
 	return m_NeighsAndAngles[root];
 }
 
-double CRichModel::ProportionOnEdgeByImage(int edgeIndex, const std::pair<double, double>& coord) const
+double CRichModel::ProportionOnEdgeByImage(int edgeIndex, const std::pair<double, double> &coord) const
 {
 	double res = Edge(edgeIndex).coordOfOppositeVert.first * coord.second - Edge(edgeIndex).coordOfOppositeVert.second * coord.first;
 	return res / ((coord.second - Edge(edgeIndex).coordOfOppositeVert.second) * Edge(edgeIndex).length);
@@ -206,27 +209,27 @@ double CRichModel::ProportionOnRightEdgeByImage(int edgeIndex, const std::pair<d
 {
 	double part1 = Edge(edgeIndex).length * coord.second;
 	double part2 = proportion * Edge(edgeIndex).length * Edge(edgeIndex).coordOfOppositeVert.second;
-	double part3 = Edge(edgeIndex).coordOfOppositeVert.second * coord.first - Edge(edgeIndex).coordOfOppositeVert.first * coord.second;	
+	double part3 = Edge(edgeIndex).coordOfOppositeVert.second * coord.first - Edge(edgeIndex).coordOfOppositeVert.first * coord.second;
 	return (part3 + proportion * part1 - part2) / (part3 + part1 - part2);
 }
 
-std::pair<double, double> CRichModel::GetNew2DCoordinatesByRotatingAroundLeftChildEdge(int edgeIndex, const std::pair<double, double>& input2DCoordinates) const
+std::pair<double, double> CRichModel::GetNew2DCoordinatesByRotatingAroundLeftChildEdge(int edgeIndex, const std::pair<double, double> &input2DCoordinates) const
 {
-    return std::make_pair(Edge(edgeIndex).matrixRotatedToLeftEdge.first * input2DCoordinates.first - Edge(edgeIndex).matrixRotatedToLeftEdge.second * input2DCoordinates.second,
-		Edge(edgeIndex).matrixRotatedToLeftEdge.second * input2DCoordinates.first + Edge(edgeIndex).matrixRotatedToLeftEdge.first * input2DCoordinates.second);
+	return std::make_pair(Edge(edgeIndex).matrixRotatedToLeftEdge.first * input2DCoordinates.first - Edge(edgeIndex).matrixRotatedToLeftEdge.second * input2DCoordinates.second,
+						  Edge(edgeIndex).matrixRotatedToLeftEdge.second * input2DCoordinates.first + Edge(edgeIndex).matrixRotatedToLeftEdge.first * input2DCoordinates.second);
 }
 
-std::pair<double, double> CRichModel::GetNew2DCoordinatesByRotatingAroundRightChildEdge(int edgeIndex, const std::pair<double, double>& input2DCoordinates) const
+std::pair<double, double> CRichModel::GetNew2DCoordinatesByRotatingAroundRightChildEdge(int edgeIndex, const std::pair<double, double> &input2DCoordinates) const
 {
 	int reverseEdge = Edge(Edge(edgeIndex).indexOfRightEdge).indexOfReverseEdge;
-    std::pair<double, double> coordOfLeftEnd = GetNew2DCoordinatesByReversingCurrentEdge(reverseEdge, Edge(reverseEdge).coordOfOppositeVert);
-    return std::make_pair(Edge(edgeIndex).matrixRotatedToRightEdge.first * input2DCoordinates.first - Edge(edgeIndex).matrixRotatedToRightEdge.second * input2DCoordinates.second + coordOfLeftEnd.first,
-		Edge(edgeIndex).matrixRotatedToRightEdge.second * input2DCoordinates.first + Edge(edgeIndex).matrixRotatedToRightEdge.first * input2DCoordinates.second + coordOfLeftEnd.second);
+	std::pair<double, double> coordOfLeftEnd = GetNew2DCoordinatesByReversingCurrentEdge(reverseEdge, Edge(reverseEdge).coordOfOppositeVert);
+	return std::make_pair(Edge(edgeIndex).matrixRotatedToRightEdge.first * input2DCoordinates.first - Edge(edgeIndex).matrixRotatedToRightEdge.second * input2DCoordinates.second + coordOfLeftEnd.first,
+						  Edge(edgeIndex).matrixRotatedToRightEdge.second * input2DCoordinates.first + Edge(edgeIndex).matrixRotatedToRightEdge.first * input2DCoordinates.second + coordOfLeftEnd.second);
 }
 
-std::pair<double, double> CRichModel::GetNew2DCoordinatesByReversingCurrentEdge(int edgeIndex, const std::pair<double, double>& input2DCoordinates) const
+std::pair<double, double> CRichModel::GetNew2DCoordinatesByReversingCurrentEdge(int edgeIndex, const std::pair<double, double> &input2DCoordinates) const
 {
-    return std::make_pair(Edge(edgeIndex).length - input2DCoordinates.first, - input2DCoordinates.second);
+	return std::make_pair(Edge(edgeIndex).length - input2DCoordinates.first, -input2DCoordinates.second);
 }
 
 bool CRichModel::HasBeenProcessed() const
@@ -251,45 +254,45 @@ CPoint3D CRichModel::ComputeShiftPoint(int indexOfVert) const
 
 CPoint3D CRichModel::ComputeShiftPoint(int indexOfVert, double epsilon) const
 {
-	return Vert(indexOfVert) +  Normal(indexOfVert) * epsilon;
+	return Vert(indexOfVert) + Normal(indexOfVert) * epsilon;
 }
 
 double CRichModel::AngleSum(int vertIndex) const
 {
 	double angleSum(0);
 	for (int j = 0; j < (int)m_NeighsAndAngles[vertIndex].size(); ++j)
-	{		
-		angleSum += m_NeighsAndAngles[vertIndex][j].second;			
+	{
+		angleSum += m_NeighsAndAngles[vertIndex][j].second;
 	}
 	return angleSum;
 }
 
-double CRichModel::DistanceToIncidentAngle(int edgeIndex, const std::pair<double, double>& coord) const
+double CRichModel::DistanceToIncidentAngle(int edgeIndex, const std::pair<double, double> &coord) const
 {
 	double detaX = coord.first - Edge(edgeIndex).coordOfOppositeVert.first;
 	double detaY = coord.second - Edge(edgeIndex).coordOfOppositeVert.second;
 	return sqrt(detaX * detaX + detaY * detaY);
 }
 
-//int CRichModel::GetFirstEdgeIndex(int faceIndex) const
+// int CRichModel::GetFirstEdgeIndex(int faceIndex) const
 //{
 //	int root = m_Faces[faceIndex][0];
 //	int subIndex = GetSubindexToVert(root, m_Faces[faceIndex][1]);
 //	return Neigh(root)[subIndex].first;
-//}
-//int CRichModel::GetSecondEdgeIndex(int faceIndex) const
+// }
+// int CRichModel::GetSecondEdgeIndex(int faceIndex) const
 //{
 //	int root = m_Faces[faceIndex][1];
 //	int subIndex = GetSubindexToVert(root, m_Faces[faceIndex][2]);
 //	return Neigh(root)[subIndex].first;
-//}
-//int CRichModel::GetThirdEdgeIndex(int faceIndex) const
+// }
+// int CRichModel::GetThirdEdgeIndex(int faceIndex) const
 //{
 //	int root = m_Faces[faceIndex][2];
 //	int subIndex = GetSubindexToVert(root, m_Faces[faceIndex][0]);
 //	return Neigh(root)[subIndex].first;
-//}
-//int CRichModel::GetEdgeIndexFromFace(int faceIndex, int subIndex) const
+// }
+// int CRichModel::GetEdgeIndexFromFace(int faceIndex, int subIndex) const
 //{
 //	if (subIndex == 0)
 //	{
@@ -311,41 +314,38 @@ double CRichModel::DistanceToIncidentAngle(int edgeIndex, const std::pair<double
 //	}
 //	assert(false);
 //	return -1;
-//}
+// }
 //
 int CRichModel::GetEdgeIndexFromTwoVertices(int leftVert, int rightVert) const
 {
 	int subIndex = GetSubindexToVert(leftVert, rightVert);
-	assert (subIndex != -1);
+	assert(subIndex != -1);
 	return Neigh(leftVert)[subIndex].first;
 }
 
-
 struct EdgePoint
 {
-    int index;
-    int leftVertIndex;
-    int rightVertIndex;
-
-    double proportion; //[0 --> left endpoint; 1 --> right endpoint]
+	int index;
+	double proportion; //[0 --> left endpoint; 1 --> right endpoint]
 	bool isVertex;
+	int leftVertIndex;
+	int rightVertIndex;
 	EdgePoint()
 	{
 	}
-	EdgePoint(int index) : index(index), isVertex(true), leftVertIndex(index), rightVertIndex(index){}
+	EdgePoint(int index) : index(index), isVertex(true), leftVertIndex(index), rightVertIndex(index) {}
 	EdgePoint(int index, double proportion) : index(index), proportion(proportion), isVertex(false), leftVertIndex(index), rightVertIndex(index) {}
-	EdgePoint(const CRichModel& model, int leftVert, int rightVert, double proportion) : proportion(proportion), isVertex(false), leftVertIndex(leftVert), rightVertIndex(rightVert)
+	EdgePoint(const CRichModel &model, int leftVert, int rightVert, double proportion) : proportion(proportion), isVertex(false), leftVertIndex(leftVert), rightVertIndex(rightVert)
 	{
 		index = model.GetEdgeIndexFromTwoVertices(leftVert, rightVert);
 	}
-	CPoint3D Get3DPoint(const CRichModel& model)
+	CPoint3D Get3DPoint(const CRichModel &model)
 	{
 		if (isVertex)
 			return model.Vert(index);
-		return (1 - proportion) * model.Vert(model.Edge(index).indexOfLeftVert)
-			+ proportion * model.Vert(model.Edge(index).indexOfRightVert);
+		return (1 - proportion) * model.Vert(model.Edge(index).indexOfLeftVert) + proportion * model.Vert(model.Edge(index).indexOfRightVert);
 	}
-	bool operator <(const EdgePoint& other) const
+	bool operator<(const EdgePoint &other) const
 	{
 		if (isVertex == false && other.isVertex == true)
 			return true;
@@ -363,11 +363,9 @@ struct EdgePoint
 	}
 };
 
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-
 
 CRichModel::CRichModel() : CBaseModel()
 {
@@ -429,7 +427,7 @@ void CRichModel::CreateEdgesFromVertsAndFaces()
 			m_Edges[threeIndices[j]].indexOfRightEdge = Edge(threeIndices[(j + 1) % 3]).indexOfReverseEdge;
 		}
 	}
-    m_Edges = (vector<CEdge>(m_Edges));
+	m_Edges = (vector<CEdge>(m_Edges));
 }
 
 void CRichModel::CollectAndArrangeNeighs()
@@ -443,7 +441,7 @@ void CRichModel::CollectAndArrangeNeighs()
 	}
 	for (int i = 0; i < (int)GetNumOfEdges(); ++i)
 	{
-		const CEdge& edge = Edge(i);
+		const CEdge &edge = Edge(i);
 		++sequenceOfDegrees[edge.indexOfLeftVert];
 		int &indexOfStartEdge = m_NeighsAndAngles[edge.indexOfLeftVert][0].first;
 		if (indexOfStartEdge == -1 || !IsStartEdge(indexOfStartEdge))
@@ -548,7 +546,7 @@ void CRichModel::ComputePlanarCoordsOfIncidentVertForEdges()
 		{
 			int reverseEdge = m_Edges[m_Edges[i].indexOfLeftEdge].indexOfReverseEdge;
 			pair<double, double> coord = GetNew2DCoordinatesByReversingCurrentEdge(reverseEdge, m_Edges[reverseEdge].coordOfOppositeVert);
-            double scale = fabs(coord.first) + fabs(coord.second);
+			double scale = fabs(coord.first) + fabs(coord.second);
 			coord.first /= scale;
 			coord.second /= scale;
 			double len = sqrt(coord.first * coord.first + coord.second * coord.second);
@@ -563,7 +561,7 @@ void CRichModel::ComputePlanarCoordsOfIncidentVertForEdges()
 
 			double detaX = rightX - leftX;
 			double detaY = rightY - leftY;
-            double scale = fabs(detaX) + fabs(detaY);
+			double scale = fabs(detaX) + fabs(detaY);
 			detaX /= scale;
 			detaY /= scale;
 			double len = sqrt(detaX * detaX + detaY * detaY);
@@ -592,12 +590,12 @@ void CRichModel::Preprocess()
 	}
 }
 
-CPoint3D CRichModel::CombinePointAndNormalTo(const CPoint3D& pt, const CPoint3D& normal)
+CPoint3D CRichModel::CombinePointAndNormalTo(const CPoint3D &pt, const CPoint3D &normal)
 {
 	return pt + normal * RateOfNormalShift;
 }
 
-CPoint3D CRichModel::CombineTwoNormalsTo(const CPoint3D& pt1, double coef1, const CPoint3D& pt2, double coef2)
+CPoint3D CRichModel::CombineTwoNormalsTo(const CPoint3D &pt1, double coef1, const CPoint3D &pt2, double coef2)
 {
 	return coef1 * pt1 + coef2 * pt2;
 }
@@ -627,7 +625,7 @@ void CRichModel::ComputeNumOfHoles()
 			extremeEdges.erase(edge);
 			int root = Edge(edge).indexOfRightVert;
 			int index = GetSubindexToVert(root, Edge(edge).indexOfLeftVert);
-			edge  = Neigh(root)[(index - 1 + (int)Neigh(root).size()) % (int)Neigh(root).size()].first;
+			edge = Neigh(root)[(index - 1 + (int)Neigh(root).size()) % (int)Neigh(root).size()].first;
 		} while (edge != firstEdge && !extremeEdges.empty());
 	}
 }
@@ -675,7 +673,7 @@ void CRichModel::SetEdgeLength(int leftVert, int rightVert, double newLength, bo
 	int edgeID = GetEdgeIndexFromTwoVertices(leftVert, rightVert);
 	int reverseID = Edge(edgeID).indexOfReverseEdge;
 	m_Edges[edgeID].length = newLength;
-	if(applyReverse)
+	if (applyReverse)
 	{
 		m_Edges[reverseID].length = newLength;
 	}
@@ -686,9 +684,3 @@ void CRichModel::UpdateAfterChangingEdgeLengths()
 	ComputeAnglesAroundVerts();
 	ComputePlanarCoordsOfIncidentVertForEdges();
 }
-
-
-
-
-
-

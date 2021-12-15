@@ -10,7 +10,7 @@ using namespace std;
 struct CFace
 {
 	int verts[3];
-	CFace(){}
+	CFace() {}
 	CFace(int x, int y, int z)
 	{
 		verts[0] = x;
@@ -25,7 +25,7 @@ struct CFace
 		verts[2] = z;
 	}
 
-	int& operator[](int index)
+	int &operator[](int index)
 	{
 		return verts[index];
 	}
@@ -45,23 +45,21 @@ public:
 	void AdjustScaleAndComputeNormalsToVerts();
 	inline int GetNumOfVerts() const;
 	inline int GetNumOfFaces() const;
-	inline const CPoint3D& Vert(int vertIndex) const;
-	inline const CPoint3D& Normal(int vertIndex) const;
-	inline const CFace& Face(int faceIndex) const;
+	inline const CPoint3D &Vert(int vertIndex) const;
+	inline const CPoint3D &Normal(int vertIndex) const;
+	inline const CFace &Face(int faceIndex) const;
+
 public:
-    std::vector<CPoint3D> m_Verts;
-    std::vector<CPoint3D> m_NormalsToVerts;
-    CPoint3D m_ptUp;
+	std::vector<CPoint3D> m_Verts;
+	std::vector<CPoint3D> m_NormalsToVerts;
+	CPoint3D m_ptUp;
 	CPoint3D m_ptDown;
 	CPoint3D m_center;
-    std::vector<CFace> m_Faces;
-
+	std::vector<CFace> m_Faces;
 
 	double m_scale;
 	bool m_fBeLoaded;
 };
-
-
 
 int CBaseModel::GetNumOfVerts() const
 {
@@ -73,24 +71,20 @@ int CBaseModel::GetNumOfFaces() const
 	return (int)m_Faces.size();
 }
 
-const CPoint3D& CBaseModel::Vert(int vertIndex) const
+const CPoint3D &CBaseModel::Vert(int vertIndex) const
 {
 	return m_Verts[vertIndex];
 }
 
-const CPoint3D& CBaseModel::Normal(int vertIndex) const
+const CPoint3D &CBaseModel::Normal(int vertIndex) const
 {
 	return m_NormalsToVerts[vertIndex];
 }
 
-const CFace& CBaseModel::Face(int faceIndex) const
+const CFace &CBaseModel::Face(int faceIndex) const
 {
 	return m_Faces[faceIndex];
 }
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -104,7 +98,7 @@ void CBaseModel::LoadModel(std::vector<CPoint3D> vertices, std::vector<CFace> fa
 {
 	m_fBeLoaded = false;
 
-	for(CPoint3D p3d : vertices)
+	for (CPoint3D p3d : vertices)
 	{
 		CPoint3D pt;
 		pt.x = p3d.x;
@@ -121,7 +115,7 @@ void CBaseModel::LoadModel(std::vector<CPoint3D> vertices, std::vector<CFace> fa
 	}
 
 	m_fBeLoaded = true;
-	if(isAValidModel())
+	if (isAValidModel())
 	{
 		AdjustScaleAndComputeNormalsToVerts();
 	}
@@ -130,7 +124,7 @@ void CBaseModel::LoadModel(std::vector<CPoint3D> vertices, std::vector<CFace> fa
 void CBaseModel::Finalize()
 {
 	m_fBeLoaded = true;
-	if(isAValidModel())
+	if (isAValidModel())
 	{
 		AdjustScaleAndComputeNormalsToVerts();
 	}
@@ -153,10 +147,10 @@ void CBaseModel::AdjustScaleAndComputeNormalsToVerts()
 	for (int i = 0; i < (int)m_Faces.size(); ++i)
 	{
 		CPoint3D normal = VectorCross(Vert(Face(i)[0]),
-			Vert(Face(i)[1]),
-			Vert(Face(i)[2]));
+									  Vert(Face(i)[1]),
+									  Vert(Face(i)[2]));
 		double area = normal.Len();
-		CPoint3D gravity3 = Vert(Face(i)[0]) +	Vert(Face(i)[1]) + Vert(Face(i)[2]);
+		CPoint3D gravity3 = Vert(Face(i)[0]) + Vert(Face(i)[1]) + Vert(Face(i)[2]);
 		center += area * gravity3;
 		sumArea += area;
 		sumNormal += normal;
@@ -171,13 +165,11 @@ void CBaseModel::AdjustScaleAndComputeNormalsToVerts()
 	}
 	center /= sumArea * 3;
 	deta -= 3 * (center ^ sumNormal);
-	if (true)//deta > 0)
+	if (true) // deta > 0)
 	{
 		for (int i = 0; i < GetNumOfVerts(); ++i)
 		{
-			if (fabs(m_NormalsToVerts[i].x)
-				+ fabs(m_NormalsToVerts[i].y)
-				+ fabs(m_NormalsToVerts[i].z) >= FLT_EPSILON)
+			if (fabs(m_NormalsToVerts[i].x) + fabs(m_NormalsToVerts[i].y) + fabs(m_NormalsToVerts[i].z) >= FLT_EPSILON)
 			{
 				m_NormalsToVerts[i].Normalize();
 			}
@@ -193,9 +185,7 @@ void CBaseModel::AdjustScaleAndComputeNormalsToVerts()
 		}
 		for (int i = 0; i < GetNumOfVerts(); ++i)
 		{
-			if (fabs(m_NormalsToVerts[i].x)
-				+ fabs(m_NormalsToVerts[i].y)
-				+ fabs(m_NormalsToVerts[i].z) >= FLT_EPSILON)
+			if (fabs(m_NormalsToVerts[i].x) + fabs(m_NormalsToVerts[i].y) + fabs(m_NormalsToVerts[i].z) >= FLT_EPSILON)
 			{
 				double len = m_NormalsToVerts[i].Len();
 				m_NormalsToVerts[i].x /= -len;
@@ -234,19 +224,16 @@ void CBaseModel::AdjustScaleAndComputeNormalsToVerts()
 	m_center = center;
 	m_ptUp = ptUp;
 	m_ptDown = ptDown;
-//////////////////////////////////////////////////////////////////////////
-	//the model is scaled.
 	//////////////////////////////////////////////////////////////////////////
-	//m_ptUp = (m_ptUp - center) * m_scale;
-	//m_ptDown = (m_ptUp - m_ptDown) * m_scale;
-	//for (int i = 0; i < (int)m_Verts.size(); ++i)
+	// the model is scaled.
+	//////////////////////////////////////////////////////////////////////////
+	// m_ptUp = (m_ptUp - center) * m_scale;
+	// m_ptDown = (m_ptUp - m_ptDown) * m_scale;
+	// for (int i = 0; i < (int)m_Verts.size(); ++i)
 	//{
 	//	m_Verts[i] = (m_Verts[i] - center) * m_scale;
-	//}
+	// }
 
-	//m_scale = 1;
-	//m_center = CPoint3D(0, 0, 0);
+	// m_scale = 1;
+	// m_center = CPoint3D(0, 0, 0);
 }
-
-
-

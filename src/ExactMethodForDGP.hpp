@@ -6,6 +6,7 @@
 
 #include <cstdlib>
 #include <stdlib.h>
+#include <chrono>
 
 #include "RichModel.hpp"
 
@@ -30,11 +31,11 @@ struct QuoteInfoAtVertex
 	char birthTime;
 	int indexOfVert;
 	double disUptodate;
-	bool operator<(const QuoteInfoAtVertex& another) const
+	bool operator<(const QuoteInfoAtVertex &another) const
 	{
 		return disUptodate > another.disUptodate;
 	}
-	QuoteInfoAtVertex(){}
+	QuoteInfoAtVertex() {}
 	QuoteInfoAtVertex(char birthTime, int indexOfVert, double disUptodate)
 	{
 		this->birthTime = birthTime;
@@ -45,18 +46,18 @@ struct QuoteInfoAtVertex
 
 using namespace std;
 
-class CExactMethodForDGP  
+class CExactMethodForDGP
 {
 public:
-    std::vector<InfoAtVertex> m_InfoAtVertices;
+	std::vector<InfoAtVertex> m_InfoAtVertices;
 
-protected:	
-	bool fComputationCompleted;	
+protected:
+	bool fComputationCompleted;
 	bool fLocked;
 	double totalLen;
 	int nTotalCurves;
 
-    std::set<int> indexOfSourceVerts;
+	std::set<int> indexOfSourceVerts;
 	int nCountOfWindows;
 	double nTotalMilliSeconds;
 	int nMaxLenOfWindowQueue;
@@ -65,17 +66,19 @@ protected:
 	double NPE;
 	double memory;
 	double farestDis;
-    std::vector<std::list<CPoint3D> > m_tableOfResultingPaths;
-	const CRichModel& model;
-    std::string nameOfAlgorithm;
+	std::vector<std::list<CPoint3D>> m_tableOfResultingPaths;
+	const CRichModel &model;
+	std::string nameOfAlgorithm;
+
 protected:
 	void BackTrace(int indexOfVert);
 	void BackTraceWithoutStoring(int indexOfVert) const;
+
 public:
-    CExactMethodForDGP(const CRichModel& inputModel, const std::set<int> &indexOfSourceVerts);
+	CExactMethodForDGP(const CRichModel &inputModel, const std::set<int> &indexOfSourceVerts);
 	virtual ~CExactMethodForDGP();
 	inline int GetRootSourceOfVert(int index) const;
-	vector<EdgePoint>& FindSourceVertex(int indexOfVert, std::vector<EdgePoint>& resultingPath) const;
+	vector<EdgePoint> &FindSourceVertex(int indexOfVert, std::vector<EdgePoint> &resultingPath) const;
 	void PickShortestPaths(int num);
 	virtual void Execute();
 	virtual void InitContainers() = 0;
@@ -88,7 +91,7 @@ public:
 	inline int GetMaxLenOfQue() const;
 	inline double GetNPE() const;
 	inline int GetDepthOfSequenceTree() const;
-    inline std::string GetAlgorithmName() const;
+	inline std::string GetAlgorithmName() const;
 	inline bool HasBeenCompleted() const;
 	std::vector<InfoAtVertex> GetVertexDistances();
 };
@@ -157,7 +160,7 @@ int CExactMethodForDGP::GetRootSourceOfVert(int index) const
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CExactMethodForDGP::CExactMethodForDGP(const CRichModel& inputModel, const set<int> &indexOfSourceVerts) : model(inputModel)
+CExactMethodForDGP::CExactMethodForDGP(const CRichModel &inputModel, const set<int> &indexOfSourceVerts) : model(inputModel)
 {
 	this->indexOfSourceVerts = indexOfSourceVerts;
 	nCountOfWindows = 0;
@@ -205,7 +208,7 @@ void CExactMethodForDGP::PickShortestPaths(int num)
 		else
 		{
 			float step = model.GetNumOfVerts() / float(num);
-            step = std::max(1.0f, step);
+			step = std::max(1.0f, step);
 			m_tableOfResultingPaths.reserve(int(model.GetNumOfVerts() / step) + 1);
 			for (float i = FLT_EPSILON; i < model.GetNumOfVerts(); i += step)
 			{
@@ -269,16 +272,16 @@ void CExactMethodForDGP::BackTrace(int indexOfVert)
 			proportion = model.ProportionOnLeftEdgeByImage(edgeIndex, coord, oldProprotion);
 			if (proportion >= -LENGTH_EPSILON_CONTROL && proportion <= 1)
 			{
-                proportion = max(proportion, 0.0);
+				proportion = max(proportion, 0.0);
 				coord = model.GetNew2DCoordinatesByRotatingAroundLeftChildEdge(edgeIndex, coord);
 				edgeIndex = model.Edge(edgeIndex).indexOfLeftEdge;
-				//rightLen = disToAngle;
+				// rightLen = disToAngle;
 			}
 			else
 			{
 				proportion = model.ProportionOnRightEdgeByImage(edgeIndex, coord, oldProprotion);
-                proportion = max(proportion, 0.0);
-                proportion = min(proportion, 1.0);
+				proportion = max(proportion, 0.0);
+				proportion = min(proportion, 1.0);
 				coord = model.GetNew2DCoordinatesByRotatingAroundRightChildEdge(edgeIndex, coord);
 				edgeIndex = model.Edge(edgeIndex).indexOfRightEdge;
 			}
@@ -310,12 +313,12 @@ void CExactMethodForDGP::BackTraceWithoutStoring(int indexOfVert) const
 		}
 		vertexNodes.push_back(index);
 	};
-	int indexOfSourceVert = index;
+	// int indexOfSourceVert = index;
 
 	for (int i = 0; i < (int)vertexNodes.size() - 1; ++i)
 	{
 		int lastVert = vertexNodes[i];
-		CPoint3D pt = model.ComputeShiftPoint(lastVert);
+		// CPoint3D pt = model.ComputeShiftPoint(lastVert);
 		if (m_InfoAtVertices[lastVert].fParentIsPseudoSource)
 		{
 			continue;
@@ -327,34 +330,34 @@ void CExactMethodForDGP::BackTraceWithoutStoring(int indexOfVert) const
 		double proportion = 1 - m_InfoAtVertices[lastVert].entryProp;
 		while (1)
 		{
-			CPoint3D pt1 = model.ComputeShiftPoint(model.Edge(edgeIndex).indexOfLeftVert);
-			CPoint3D pt2 = model.ComputeShiftPoint(model.Edge(edgeIndex).indexOfRightVert);
-			CPoint3D ptIntersection = CRichModel::CombineTwoNormalsTo(pt1, 1 - proportion, pt2, proportion);
+			// CPoint3D pt1 = model.ComputeShiftPoint(model.Edge(edgeIndex).indexOfLeftVert);
+			// CPoint3D pt2 = model.ComputeShiftPoint(model.Edge(edgeIndex).indexOfRightVert);
+			// CPoint3D ptIntersection = CRichModel::CombineTwoNormalsTo(pt1, 1 - proportion, pt2, proportion);
 			if (model.Edge(edgeIndex).indexOfOppositeVert == vertexNodes[i + 1])
 				break;
 			double oldProprotion = proportion;
 			proportion = model.ProportionOnLeftEdgeByImage(edgeIndex, coord, oldProprotion);
 			if (proportion >= -LENGTH_EPSILON_CONTROL && proportion <= 1)
 			{
-                proportion = max(proportion, 0.0);
+				proportion = max(proportion, 0.0);
 				coord = model.GetNew2DCoordinatesByRotatingAroundLeftChildEdge(edgeIndex, coord);
 				edgeIndex = model.Edge(edgeIndex).indexOfLeftEdge;
-				//rightLen = disToAngle;
+				// rightLen = disToAngle;
 			}
 			else
 			{
 				proportion = model.ProportionOnRightEdgeByImage(edgeIndex, coord, oldProprotion);
-                proportion = max(proportion, 0.0);
-                proportion = min(proportion, 1.0);
+				proportion = max(proportion, 0.0);
+				proportion = min(proportion, 1.0);
 				coord = model.GetNew2DCoordinatesByRotatingAroundRightChildEdge(edgeIndex, coord);
 				edgeIndex = model.Edge(edgeIndex).indexOfRightEdge;
 			}
 		};
 	}
-	CPoint3D pt = model.ComputeShiftPoint(indexOfSourceVert);
+	// CPoint3D pt = model.ComputeShiftPoint(indexOfSourceVert);
 }
 
-vector<EdgePoint>& CExactMethodForDGP::FindSourceVertex(int indexOfVert, vector<EdgePoint>& resultingPath) const
+vector<EdgePoint> &CExactMethodForDGP::FindSourceVertex(int indexOfVert, vector<EdgePoint> &resultingPath) const
 {
 	resultingPath.clear();
 
@@ -384,7 +387,7 @@ vector<EdgePoint>& CExactMethodForDGP::FindSourceVertex(int indexOfVert, vector<
 	for (int i = 0; i < (int)vertexNodes.size() - 1; ++i)
 	{
 		int lastVert = vertexNodes[i];
-		//if (lastVert != indexOfVert)
+		// if (lastVert != indexOfVert)
 		resultingPath.push_back(EdgePoint(lastVert));
 		if (m_InfoAtVertices[lastVert].fParentIsPseudoSource)
 		{
@@ -409,16 +412,16 @@ vector<EdgePoint>& CExactMethodForDGP::FindSourceVertex(int indexOfVert, vector<
 
 			if (proportion >= -LENGTH_EPSILON_CONTROL && proportion <= 1)
 			{
-                proportion = max(proportion, 0.0);
+				proportion = max(proportion, 0.0);
 				coord = model.GetNew2DCoordinatesByRotatingAroundLeftChildEdge(edgeIndex, coord);
 				edgeIndex = model.Edge(edgeIndex).indexOfLeftEdge;
-				//rightLen = disToAngle;
+				// rightLen = disToAngle;
 			}
 			else
 			{
 				proportion = model.ProportionOnRightEdgeByImage(edgeIndex, coord, oldProprotion);
-                proportion = max(proportion, 0.0);
-                proportion = min(proportion, 1.0);
+				proportion = max(proportion, 0.0);
+				proportion = min(proportion, 1.0);
 				coord = model.GetNew2DCoordinatesByRotatingAroundRightChildEdge(edgeIndex, coord);
 				edgeIndex = model.Edge(edgeIndex).indexOfRightEdge;
 			}
@@ -428,15 +431,22 @@ vector<EdgePoint>& CExactMethodForDGP::FindSourceVertex(int indexOfVert, vector<
 	return resultingPath;
 }
 
+// int GetTickCount()
+// {
+// 	// Something like GetTickCount but portable
+// 	// It rolls over every ~ 12.1 days (0x100000/24/60/60)
+// 	// Use GetMilliSpan to correct for rollover
+// 	timeb tb;
+// 	ftime(&tb);
+// 	int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
+// 	return nCount;
+// }
+
+// Rebuild of GetTickCount but with chrono library
 int GetTickCount()
 {
-  // Something like GetTickCount but portable
-  // It rolls over every ~ 12.1 days (0x100000/24/60/60)
-  // Use GetMilliSpan to correct for rollover
-  timeb tb;
-  ftime( &tb );
-  int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
-  return nCount;
+    using namespace std::chrono;
+    return duration_cast<milliseconds>(steady_clock::now().time_since_epoch()).count();
 }
 
 void CExactMethodForDGP::Execute()
@@ -450,9 +460,9 @@ void CExactMethodForDGP::Execute()
 		nMaxLenOfWindowQueue = 0;
 		depthOfResultingTree = 0;
 		InitContainers();
-        nTotalMilliSeconds = GetTickCount();
+		nTotalMilliSeconds = GetTickCount();
 		BuildSequenceTree();
-        nTotalMilliSeconds = GetTickCount()- nTotalMilliSeconds;
+		nTotalMilliSeconds = GetTickCount() - nTotalMilliSeconds;
 		FillExperimentalResults();
 		ClearContainers();
 
@@ -460,4 +470,3 @@ void CExactMethodForDGP::Execute()
 		fLocked = false;
 	}
 }
-
