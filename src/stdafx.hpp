@@ -24,6 +24,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-constexpr double LENGTH_EPSILON_CONTROL = 1e-6;
+constexpr double LENGTH_EPSILON_CONTROL = 1e-9;
 constexpr double RateOfNormalShift = 5e-3;
 constexpr double ToleranceOfConvexAngle = 5e-2;
