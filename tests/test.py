@@ -7,12 +7,16 @@ from geodesic_chenhan import (
 )
 
 
-def rotate(l, n):
-    return l[n:] + l[:n]
+def rotate(la, n):
+    return la[n:] + la[:n]
 
 
 def test():
-    points = [CPoint3D(0.0, 0.0, 0.0), CPoint3D(0.5, 1.0, 0.0), CPoint3D(1.0, 0.0, 0.0)]
+    points = [
+        CPoint3D(0.0, 0.0, 0.0),
+        CPoint3D(0.5, 1.0, 0.0),
+        CPoint3D(1.0, 0.0, 0.0)
+    ]
     faces = [CFace(0, 1, 2)]
     bmodel = CBaseModel()
     rmodel = CRichModel()

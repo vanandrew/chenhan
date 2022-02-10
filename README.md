@@ -1,3 +1,5 @@
+[![Python package](https://github.com/vanandrew/geodesic-chenhan/actions/workflows/python-package.yml/badge.svg?branch=master)](https://github.com/vanandrew/geodesic-chenhan/actions/workflows/python-package.yml)
+
 geodesic-chenhan
 =================
 
